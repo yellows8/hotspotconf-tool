@@ -150,8 +150,7 @@ int main(int argc, char **argv)
 				//convert decoded password to hex
 				if(fieldindex==3)
 				{
-					int i;
-					for (i = 0; i < strlen(field); i++)
+					for (int i = 0; field[i]; ++i)
 					{
 						printf("%02hhX", field[i]);  // in MinGW use __mingw_printf instead
 					}
