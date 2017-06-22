@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 
 		if(linenum==2)
 		{
-			if(strcmp(line, "ServiceName,Url,Ssid,SecurityKey,SecurityMode,ApNum,IsBackground,IsBrowser,IsShop,IsGame,IsSetToFW,IsVendorIE"))
+			if(strcmp(line, "ServiceName,Url,Ssid,SecurityKey,SecurityMode,ApNum,IsBackground,IsBrowser,IsShop,IsGame,IsSetToFW,IsVendorIE,IsZone"))
 			{
 				printf("Invalid records, aborting...\n");
 				fclose(fconf);
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 		{
 			fieldindex = 0;
 			printf("Hotspot%d: ", hotspot_index);
-			while(fieldindex<12)
+			while(fieldindex<13)
 			{
 				if(fieldindex>=0 && fieldindex<4)
 				{
@@ -147,8 +147,17 @@ int main(int argc, char **argv)
 				}
 				if(retval==1)break;
 
-				if(fieldindex<11)printf("%s, ", field);
-				if(fieldindex==11)printf("%s ", field);
+				//convert decoded password to hex
+				if(fieldindex==3)
+				{
+					for (int i = 0; field[i] || (!field[i] && field[i+1]); ++i) // won't stop at single nuls
+					{
+						printf("%02hhX", field[i]);  // in MinGW use __mingw_printf instead
+					}
+					printf(", ");
+				}
+				else if(fieldindex<12)printf("%s, ", field);
+				else if(fieldindex==12)printf("%s ", field);
 				fieldindex++;
 			}
 
